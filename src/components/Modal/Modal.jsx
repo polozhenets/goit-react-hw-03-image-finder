@@ -1,4 +1,4 @@
-import React, { Children, Component } from 'react';
+import React, {  Component } from 'react';
 import PropTypes from 'prop-types';
 
 
@@ -29,11 +29,15 @@ class Modal extends Component {
       <div className="Modal" onClick={this.handleBackdropClick}>
        <div className="Overlay">
         {this.props.children}
+        
        </div>
       </div>
     );
   }
 }
-
+Modal.propTypes = {
+    children: PropTypes.node,
+    onClose: PropTypes.func.isRequired,
+  };
 
 export default Modal;

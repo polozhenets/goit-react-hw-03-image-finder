@@ -26,7 +26,6 @@ export class App extends Component {
     if (queryValue === '') {
       return;
     }
-    console.log(queryValue, page);
     try {
       const newImages = await getImages(queryValue, page);
 
@@ -80,13 +79,14 @@ export class App extends Component {
           images={this.state.pictures}
           onPictureClick={this.getLargePicture}
         />
-        {isShowMore && <Button onClick={this.fetchImages} />}
+        
         {this.state.isLoading && <Loader />}
         {this.state.showModal && (
           <Modal onClose={this.togleModal}>
-            <img className="modal-picture" src={this.state.largeImage} />
+            <img className="modal-picture" alt='bgp' src={this.state.largeImage} />
           </Modal>
         )}
+        {isShowMore && <Button onClick={this.fetchImages} />}
       </div>
     );
   }
