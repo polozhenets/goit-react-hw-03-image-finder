@@ -5,26 +5,20 @@ import PropTypes from 'prop-types';
 
 class Modal extends Component {
   componentDidMount() {
-    window.addEventListener('keydown', this.handleKeyDown);
-    window.addEventListener('mousedown', this.mouseEvent);
+    window.addEventListener('mousedown', this.handleKeyDown);
   }
 
   componentWillUnmount() {
-    window.removeEventListener('keydown', this.handleKeyDown);
-    window.removeEventListener('mousedown', this.mouseEvent);
+    window.removeEventListener('mousedown', this.handleKeyDown);
   }
 
   handleKeyDown = event => {
-    if (event.code === 'Escape') {
+    if (event.currentTarget.button === 0) {
       this.props.onClose();
     }
   };
 
-  mouseEvent = event =>{
-    if(event.button===0){
-      this.props.onClose();
-    }
-  }
+
 
   handleBackdropClick = event => {
     if (event.currentTarget === event.target) {
@@ -34,10 +28,9 @@ class Modal extends Component {
 
   render() {
     return (
-      <div className="Modal" onClick={this.handleBackdropClick}>
-       <div className="Overlay">
+      <div className="Modal">
+       <div className="Overlay"  onClick={this.handleBackdropClick}>
         {this.props.children}
-        
        </div>
       </div>
     );

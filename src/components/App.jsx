@@ -31,7 +31,6 @@ export class App extends Component {
       console.log(this.state.page<Math.ceil(newImages.total/12))
       this.setState(prevState => ({
         pictures: [...prevState.pictures, ...newImages.pictures],
-        page: prevState.page + 1,
         showMore:this.state.page<Math.ceil(newImages.total/12),
       }));
     } catch (error) {
@@ -44,7 +43,7 @@ export class App extends Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevState.queryValue !== this.state.queryValue) {
+    if (prevState.queryValue !== this.state.queryValue || this.state.page!==prevState.page) {
       this.fetchImages();
     }
   }
@@ -75,6 +74,12 @@ export class App extends Component {
     }));
   };
 
+  loadMoreHandler = () => {
+    this.setState(prev=>({
+      page:prev.page+1,
+    }))
+  }
+
   render() {
     
     return (
@@ -92,7 +97,7 @@ export class App extends Component {
             <img className="modal-picture" alt='bgp' src={this.state.largeImage} />
           </Modal>
         )}
-        {this.state.showMore && <Button onClick={this.fetchImages} />}
+        {this.state.showMore && <Button onClick={this.loadMoreHandler} />}
       </div>
     );
   }
