@@ -16,26 +16,30 @@ export class App extends Component {
     showModal: false,
     largeImage: '',
     error: null,
+    showMore:false,
   };
+  
 
   fetchImages = async () => {
     const { queryValue, page } = this.state;
     this.setState({
       isLoading: true,
     });
-    if (queryValue === '') {
-      return;
-    }
+  
     try {
       const newImages = await getImages(queryValue, page);
-
+      console.log(this.state.page<Math.ceil(newImages.total/12))
       this.setState(prevState => ({
         pictures: [...prevState.pictures, ...newImages.pictures],
         page: prevState.page + 1,
-        isLoading: false,
+        showMore:this.state.page<Math.ceil(newImages.total/12),
       }));
     } catch (error) {
       console.log(error);
+    }finally{
+      this.setState({
+        isLoading: false,
+      });
     }
   };
 
@@ -46,11 +50,13 @@ export class App extends Component {
   }
 
   onSubmitHandler = queryInput => {
+    if (queryInput === '') {
+      return;
+    }
     this.setState({
       pictures: [],
       page: 1,
       queryValue: queryInput,
-      isLoading: true,
     });
   };
 
@@ -70,7 +76,7 @@ export class App extends Component {
   };
 
   render() {
-    const isShowMore = this.state.pictures.length > 0;
+    
     return (
       <div className="App">
         <Searchbar onSearch={this.onSubmitHandler} />
@@ -86,7 +92,7 @@ export class App extends Component {
             <img className="modal-picture" alt='bgp' src={this.state.largeImage} />
           </Modal>
         )}
-        {isShowMore && <Button onClick={this.fetchImages} />}
+        {this.state.showMore && <Button onClick={this.fetchImages} />}
       </div>
     );
   }

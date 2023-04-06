@@ -6,10 +6,12 @@ import PropTypes from 'prop-types';
 class Modal extends Component {
   componentDidMount() {
     window.addEventListener('keydown', this.handleKeyDown);
+    window.addEventListener('mousedown', this.mouseEvent);
   }
 
   componentWillUnmount() {
     window.removeEventListener('keydown', this.handleKeyDown);
+    window.removeEventListener('mousedown', this.mouseEvent);
   }
 
   handleKeyDown = event => {
@@ -17,6 +19,12 @@ class Modal extends Component {
       this.props.onClose();
     }
   };
+
+  mouseEvent = event =>{
+    if(event.button===0){
+      this.props.onClose();
+    }
+  }
 
   handleBackdropClick = event => {
     if (event.currentTarget === event.target) {
